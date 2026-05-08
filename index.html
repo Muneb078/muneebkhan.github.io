@@ -1,59 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Sportzfy Blog - APK Downloads & Reviews</title>
+<title>Sportzfy</title>
 
 <style>
-body{
-  margin:0;
-  font-family:Arial;
-  color:#fff;
-  background:
-    radial-gradient(circle at top left, #0f172a, transparent 50%),
-    radial-gradient(circle at bottom right, #064e3b, transparent 50%),
-    linear-gradient(120deg, #0b0f19, #1e293b);
-  min-height:100vh;
-}
-body::before{
-  content:"";
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background: url("https://grainy-gradients.vercel.app/noise.svg");
-  opacity:0.05;
-  pointer-events:none;
-}
-/* Animated background */
-@keyframes gradientBG {
-  0% {background-position: 0% 50%;}
-  50% {background-position: 100% 50%;}
-  100% {background-position: 0% 50%;}
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #020617, #0f172a);
+    color: white;
 }
 
-/* NAV */
-nav{
-  background:#111827;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:15px 20px;
-  border-bottom:2px solid #22c55e;
+/* MAIN WRAPPER */
+.container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
 }
 
-nav h1{
-  color:#22c55e;
-  font-size:20px;
+/* HEADER */
+header {
+    text-align: center;
+    padding: 20px 0;
 }
 
-nav a{
-  color:#fff;
-  text-decoration:none;
+header h1 {
+    font-size: 40px;
+    color: #00e5ff;
+    text-shadow: 0 0 15px rgba(0,229,255,0.5);
+}
+
+/* CARDS */
+.card {
+    background: rgba(255,255,255,0.06);
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* BUTTON */
+button {
+    background: linear-gradient(45deg, #00e5ff, #2563eb);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0,229,255,0.3);
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<header>
+    <h1>Sportzfy</h1>
+    <p>Live Sports Streaming Hub</p>
+</header>
+
+<div class="card">
+    <h3>Cricket Live</h3>
+    <a href="sportzfy.html"><button>Watch Now</button></a>
+</div>
+
+<div class="card">
+    <h3>Football Live</h3>
+    <a href="sportzfy.html"><button>Watch Now</button></a>
+</div>
+
+</div>
+
+</body>
+</html>  text-decoration:none;
   margin-left:15px;
 }
 
