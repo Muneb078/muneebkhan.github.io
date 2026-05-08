@@ -34,7 +34,658 @@
       overflow-x: hidden;
     }
 
+    /* ── ANIMATED BACKGROUND ── */
     body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 10% 20%, rgba(0,230,118,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 90% 80%, rgba(0,200,100,0.05) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Floating particles */
+    .particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--green);
+      opacity: 0;
+      animation: float-up linear infinite;
+    }
+    @keyframes float-up {
+      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+      10%  { opacity: 0.4; }
+      90%  { opacity: 0.1; }
+      100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 24px 60px;
+      overflow: hidden;
+    }
+
+    /* Stadium arc */
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 130%;
+      height: 300px;
+      border-radius: 50%;
+      border-top: 2px solid rgba(0,230,118,0.15);
+      pointer-events: none;
+    }
+
+    /* Spinning ring */
+    .hero-ring {
+      position: absolute;
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,230,118,0.1);
+      animation: spin 40s linear infinite;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+    }
+    .hero-ring::after {
+      content: '';
+      position: absolute;
+      top: 10px; left: 10px; right: 10px; bottom: 10px;
+      border-radius: 50%;
+      border: 1px dashed rgba(0,230,118,0.08);
+      animation: spin 25s linear infinite reverse;
+    }
+    @keyframes spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,61,87,0.12);
+      border: 1px solid rgba(255,61,87,0.35);
+      color: var(--red);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 50px;
+      margin-bottom: 28px;
+      animation: fade-in 0.8s ease both;
+    }
+    .live-dot {
+      width: 8px; height: 8px;
+      background: var(--red);
+      border-radius: 50%;
+      animation: pulse-red 1.2s ease infinite;
+    }
+    @keyframes pulse-red {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(72px, 14vw, 160px);
+      letter-spacing: 4px;
+      line-height: 0.9;
+      background: linear-gradient(135deg, #fff 0%, var(--green) 60%, var(--green-dim) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: fade-up 0.9s ease 0.2s both;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-sub {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(16px, 3vw, 22px);
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 12px;
+      animation: fade-up 0.9s ease 0.4s both;
+    }
+
+    .hero-desc {
+      max-width: 620px;
+      color: #9abfaa;
+      margin-top: 28px;
+      font-size: 16px;
+      animation: fade-up 0.9s ease 0.6s both;
+    }
+
+    .btn-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 40px;
+      padding: 16px 40px;
+      background: var(--green);
+      color: #000;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      animation: fade-up 0.9s ease 0.8s both;
+      box-shadow: 0 0 40px rgba(0,230,118,0.3);
+      cursor: pointer;
+      border: none;
+    }
+    .btn-download::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.15);
+      transform: translateX(-100%) skewX(-15deg);
+      transition: transform 0.4s ease;
+    }
+    .btn-download:hover::before { transform: translateX(100%) skewX(-15deg); }
+    .btn-download:hover { transform: translateY(-3px); box-shadow: 0 8px 50px rgba(0,230,118,0.5); }
+
+    /* Stats bar */
+    .stats-bar {
+      position: relative; z-index: 1;
+      display: flex; flex-wrap: wrap;
+      justify-content: center;
+      gap: 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      animation: fade-in 1s ease 1s both;
+    }
+    .stat-item {
+      flex: 1; min-width: 160px;
+      padding: 28px 20px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-item:hover { background: rgba(0,230,118,0.04); }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 42px;
+      color: var(--green);
+      letter-spacing: 2px;
+      display: block;
+    }
+    .stat-label {
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 90px 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-tag {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-tag::before {
+      content: '';
+      display: inline-block;
+      width: 30px; height: 2px;
+      background: var(--green);
+    }
+
+    h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(38px, 6vw, 60px);
+      letter-spacing: 2px;
+      line-height: 1;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+
+    h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--green);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    p { color: #9abfaa; margin-bottom: 16px; }
+
+    /* ── WHAT IS ── */
+    .what-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-top: 50px;
+      background: var(--border);
+    }
+    .what-card {
+      background: var(--card);
+      padding: 36px;
+      transition: background 0.3s;
+    }
+    .what-card:hover { background: var(--card2); }
+
+    /* ── WHY USE ── */
+    .why-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 40px;
+    }
+    .why-list li {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--green);
+      padding: 20px 24px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      transition: transform 0.2s, border-color 0.2s;
+      color: #9abfaa;
+    }
+    .why-list li:hover {
+      transform: translateX(4px);
+      border-left-color: var(--accent);
+      color: var(--text);
+    }
+    .why-list li::before {
+      content: '▶';
+      color: var(--green);
+      font-size: 11px;
+      margin-top: 4px;
+      flex-shrink: 0;
+    }
+
+    /* ── LEAGUES ── */
+    .leagues-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      margin-top: 50px;
+    }
+
+    .league-group h2 { font-size: 40px; margin-bottom: 30px; }
+
+    .league-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 28px 30px;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.2s;
+      cursor: default;
+    }
+    .league-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--green), transparent);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+      transform-origin: top;
+    }
+    .league-card:hover::before { transform: scaleY(1); }
+    .league-card:hover { border-color: rgba(0,230,118,0.4); transform: translateY(-2px); }
+
+    .league-emoji {
+      font-size: 28px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    /* ── OVERVIEW TABLE ── */
+    .overview-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 40px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px;
+    }
+    .overview-table td {
+      padding: 18px 28px;
+      border: 1px solid var(--border);
+    }
+    .overview-table tr:nth-child(odd) td { background: var(--card); }
+    .overview-table tr:nth-child(even) td { background: var(--card2); }
+    .overview-table td:first-child {
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-size: 14px;
+      width: 45%;
+    }
+    .overview-table td:last-child {
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    /* ── CHANNELS ── */
+    .channels-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 36px;
+    }
+    .channel-pill {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      padding: 10px 22px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-radius: 2px;
+      color: var(--text);
+      transition: background 0.25s, border-color 0.25s, color 0.25s;
+      cursor: default;
+    }
+    .channel-pill:hover {
+      background: var(--green);
+      border-color: var(--green);
+      color: #000;
+    }
+
+    /* ── ALTERNATIVES ── */
+    .alt-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      margin-top: 40px;
+    }
+    .alt-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .alt-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--green), transparent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+    .alt-card:hover::after { transform: scaleX(1); }
+    .alt-card:hover { border-color: rgba(0,230,118,0.3); transform: translateY(-4px); }
+
+    /* ── FEATURES ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2px;
+      background: var(--border);
+      margin-top: 50px;
+    }
+    .feature-card {
+      background: var(--card);
+      padding: 36px;
+      transition: background 0.3s;
+    }
+    .feature-card:hover { background: var(--card2); }
+    .feature-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    /* ── PROS CONS ── */
+    .pros-cons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 50px;
+    }
+    .pros-box, .cons-box {
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .pros-header, .cons-header {
+      padding: 18px 28px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .pros-header { background: rgba(0,230,118,0.12); color: var(--green); }
+    .cons-header { background: rgba(255,61,87,0.1); color: var(--red); }
+    .pros-list, .cons-list { list-style: none; padding: 20px 28px; }
+    .pros-list li, .cons-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 12px;
+      font-size: 15px;
+      color: #9abfaa;
+    }
+    .pros-list li:last-child, .cons-list li:last-child { border-bottom: none; }
+    .pros-list li::before { content: '✓'; color: var(--green); font-weight: 700; }
+    .cons-list li::before { content: '✗'; color: var(--red); font-weight: 700; }
+
+    /* ── DOWNLOAD ── */
+    .steps {
+      list-style: none;
+      margin-top: 44px;
+      counter-reset: steps;
+    }
+    .steps li {
+      counter-increment: steps;
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+    .steps li::before {
+      content: counter(steps, decimal-leading-zero);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      color: var(--green);
+      line-height: 1;
+      flex-shrink: 0;
+      width: 48px;
+    }
+    .steps li p { color: #9abfaa; margin: 0; }
+
+    /* ── FAQ ── */
+    .faq-list { margin-top: 44px; }
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .faq-q {
+      background: var(--card);
+      padding: 22px 28px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s;
+      user-select: none;
+    }
+    .faq-q:hover { background: var(--card2); }
+    .faq-q .arrow {
+      color: var(--green);
+      font-size: 20px;
+      transition: transform 0.3s;
+      flex-shrink: 0;
+    }
+    .faq-a {
+      background: var(--card2);
+      padding: 0 28px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+    }
+    .faq-a.open {
+      max-height: 200px;
+      padding: 20px 28px;
+    }
+    .faq-item.active .arrow { transform: rotate(45deg); }
+
+    /* ── CONCLUSION ── */
+    .conclusion-box {
+      background: linear-gradient(135deg, rgba(0,230,118,0.06) 0%, rgba(0,230,118,0.02) 100%);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 50px;
+      margin-top: 40px;
+      text-align: center;
+    }
+    .conclusion-box h2 { margin-bottom: 20px; }
+    .conclusion-box p { max-width: 680px; margin: 0 auto 16px; font-size: 17px; }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 40px 24px;
+      color: var(--muted);
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+
+    /* ── SECTION DIVIDER ── */
+    .divider {
+      position: relative; z-index: 1;
+      height: 1px;
+      background: var(--border);
+      margin: 0 24px;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fade-up { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--dark2); }
+    ::-webkit-scrollbar-thumb { background: var(--green); border-radius: 3px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .what-grid, .leagues-wrapper, .pros-cons { grid-template-columns: 1fr; }
+      .stats-bar { flex-direction: column; }
+      .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .conclusion-box { padding: 30px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Particles -->
+  <div class="particles" id="particles"></div>
+
+  <!-- ── HERO ── -->
+  <div class="hero">
+    <div class="hero-ring"></div>
+    <div class="live-badge"><span class="live-dot"></span> Live Sports Streaming</div>
+    <h1>Sportzfy</h1>
+    <p class="hero-sub">Free · HD · Ad-Free · All Sports</p>
+    <p class="hero-desc">
+      Sportzfy is a popular application created for sports streaming. Watch live cricket, football, basketball, and more — completely free with no subscription.
+    </p>
+    <a class="btn-download" href="#download">
+      ⬇ Download Now — It's Free
+    </a>
+  </div>
+
+  <!-- Stats bar -->
+  <div class="stats-bar">
+    <div class="stat-item"><span class="stat-num">14MB</span><span class="stat-label">App Size</span></div>
+    <div class="stat-item"><span class="stat-num">HD</span><span class="stat-label">Stream Quality</span></div>
+    <div class="stat-item"><span class="stat-num">10+</span><span class="stat-label">Sports Channels</span></div>
+    <div class="stat-item"><span class="stat-num">V15</span><span class="stat-label">Latest Version</span></div>
+    <div class="stat-item"><span class="stat-num">FREE</span><span class="stat-label">No Subscription</span></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ── WHAT IS ── -->
+  <section class="reveal">
+    <div class="section-tag">Overview</div>
+    <h2>What is the Sportzfy App?</h2>
+    <p>
+      Are you tired of watching matches on television and want something easy for this purpose? You want to stream the PSL final but every single app or website demands either your credit card or may show ads. No need to worry — Sportzfy has you covered.
+    </p>
+    <div class="what-grid">
+      <div class="what-card">
+        <h3>Free Live Streaming</h3>
+        <p>All the content present in it can be streamed in HD quality with no hidden charges for watching cricket, football, or other sports. No subscription needed.</p>
+      </div>
+      <div class="what-card">
+        <h3>Universal Compatibility</h3>
+        <p>The app is compatible with Android, PC, and iOS devices. It provides commentary in English, Spanish, and Hindi for global viewers.</p>
+      </div>
+      <div class="what-card">
+        <h3>Simple Interface</h3>
+        <p>It has a simple and user-friendly interface and is easy to use. All the buttons are clearly visible, and users can access them easily.</p>
+      </div>
+      <div class="what-card">
+        <h3>Tons of Channels</h3>
+        <p>Popular sports channels such as    body::before {
       content: '';
       position: fixed;
       inset: 0;
@@ -668,7 +1319,790 @@
       <li>Viewers can stream games in HD resolution without facing any buffering or interruption</li>
       <li>Works on almost all devices, such as Android, iOS, or PC</li>
       <li>Covers a wide range of sports such as basketball, badminton, and wrestling</li>
-      <li>Due to being lightweight, this runs smoothly on low-end and old de    transition: 0.3s;
+      <li>Due to being lightweight, this runs smoothly on low-end and old deHTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Sportzfy allows users to watch live football, cricket, and other sports for free. Download the app now to enjoy HD streaming with an ad-free experience."/>
+
+  <title>Sportzfy – Free Live Sports Streaming App</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet"/>
+
+  <style>
+
+    :root{
+      --green:#00e676;
+      --green2:#00c853;
+      --dark:#070b10;
+      --dark2:#0d1117;
+      --card:#121821;
+      --card2:#161d27;
+      --text:#edf7ef;
+      --muted:#8fa79a;
+      --border:rgba(0,230,118,0.14);
+      --red:#ff3d57;
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'Barlow',sans-serif;
+      background:
+      radial-gradient(circle at top left, rgba(0,230,118,0.08), transparent 30%),
+      radial-gradient(circle at bottom right, rgba(0,230,118,0.05), transparent 30%),
+      linear-gradient(135deg,#05080d,#0b1118,#0f1720);
+      color:var(--text);
+      line-height:1.8;
+      overflow-x:hidden;
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar{
+      width:7px;
+    }
+
+    ::-webkit-scrollbar-thumb{
+      background:var(--green);
+      border-radius:10px;
+    }
+
+    ::-webkit-scrollbar-track{
+      background:#091018;
+    }
+
+    /* PARTICLES */
+
+    .particles{
+      position:fixed;
+      inset:0;
+      overflow:hidden;
+      pointer-events:none;
+      z-index:0;
+    }
+
+    .particle{
+      position:absolute;
+      border-radius:50%;
+      background:rgba(0,230,118,0.4);
+      animation:float linear infinite;
+    }
+
+    @keyframes float{
+      0%{
+        transform:translateY(100vh) scale(0);
+        opacity:0;
+      }
+
+      20%{
+        opacity:0.4;
+      }
+
+      100%{
+        transform:translateY(-20vh) scale(1);
+        opacity:0;
+      }
+    }
+
+    /* HERO */
+
+    .hero{
+      position:relative;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      padding:90px 24px;
+      z-index:1;
+      overflow:hidden;
+    }
+
+    .hero-ring{
+      position:absolute;
+      width:750px;
+      height:750px;
+      border-radius:50%;
+      border:1px solid rgba(0,230,118,0.12);
+      animation:spin 40s linear infinite;
+    }
+
+    .hero-ring::after{
+      content:'';
+      position:absolute;
+      inset:20px;
+      border-radius:50%;
+      border:1px dashed rgba(0,230,118,0.09);
+      animation:spin 20s linear infinite reverse;
+    }
+
+    @keyframes spin{
+      to{
+        transform:rotate(360deg);
+      }
+    }
+
+    .live-badge{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:7px 20px;
+      border-radius:50px;
+      background:rgba(255,61,87,0.12);
+      border:1px solid rgba(255,61,87,0.3);
+      color:var(--red);
+      font-family:'Barlow Condensed',sans-serif;
+      letter-spacing:3px;
+      text-transform:uppercase;
+      font-size:13px;
+      margin-bottom:30px;
+      animation:fadeUp 1s ease;
+    }
+
+    .live-dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:var(--red);
+      animation:pulse 1s infinite;
+    }
+
+    @keyframes pulse{
+      50%{
+        transform:scale(0.6);
+        opacity:0.4;
+      }
+    }
+
+    .hero h1{
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(90px,15vw,180px);
+      letter-spacing:5px;
+      line-height:0.9;
+      background:linear-gradient(135deg,#fff,var(--green));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      text-shadow:0 0 40px rgba(0,230,118,0.2);
+      animation:fadeUp 1s ease;
+    }
+
+    .hero-sub{
+      margin-top:10px;
+      font-family:'Barlow Condensed',sans-serif;
+      color:var(--muted);
+      letter-spacing:6px;
+      text-transform:uppercase;
+      font-size:22px;
+      animation:fadeUp 1.2s ease;
+    }
+
+    .hero-desc{
+      max-width:700px;
+      margin-top:25px;
+      color:#9db5a8;
+      font-size:17px;
+      animation:fadeUp 1.4s ease;
+    }
+
+    .btn-download{
+      margin-top:40px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:17px 38px;
+      background:var(--green);
+      color:#000;
+      text-decoration:none;
+      font-weight:700;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      font-family:'Barlow Condensed',sans-serif;
+      border-radius:5px;
+      transition:0.3s;
+      box-shadow:0 0 35px rgba(0,230,118,0.3);
+      animation:fadeUp 1.6s ease;
+    }
+
+    .btn-download:hover{
+      transform:translateY(-4px);
+      box-shadow:0 0 50px rgba(0,230,118,0.5);
+    }
+
+    /* STATS */
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      border-top:1px solid var(--border);
+      border-bottom:1px solid var(--border);
+      z-index:1;
+      position:relative;
+    }
+
+    .stat{
+      padding:35px 20px;
+      text-align:center;
+      border-right:1px solid var(--border);
+      background:rgba(255,255,255,0.01);
+      transition:0.3s;
+    }
+
+    .stat:hover{
+      background:rgba(0,230,118,0.04);
+    }
+
+    .stat:last-child{
+      border-right:none;
+    }
+
+    .stat-num{
+      display:block;
+      font-family:'Bebas Neue',sans-serif;
+      font-size:45px;
+      color:var(--green);
+      letter-spacing:2px;
+    }
+
+    .stat-label{
+      color:var(--muted);
+      font-size:12px;
+      letter-spacing:3px;
+      text-transform:uppercase;
+    }
+
+    /* GENERAL */
+
+    section{
+      max-width:1150px;
+      margin:auto;
+      padding:90px 24px;
+      position:relative;
+      z-index:1;
+    }
+
+    .section-tag{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:14px;
+      color:var(--green);
+      text-transform:uppercase;
+      letter-spacing:4px;
+      font-size:12px;
+      font-family:'Barlow Condensed',sans-serif;
+    }
+
+    .section-tag::before{
+      content:'';
+      width:35px;
+      height:2px;
+      background:var(--green);
+    }
+
+    h2{
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(40px,6vw,68px);
+      letter-spacing:2px;
+      line-height:1;
+      margin-bottom:20px;
+    }
+
+    h3{
+      font-family:'Barlow Condensed',sans-serif;
+      color:var(--green);
+      text-transform:uppercase;
+      letter-spacing:1px;
+      margin-bottom:10px;
+      font-size:24px;
+    }
+
+    p{
+      color:#9fb5a9;
+      margin-bottom:18px;
+    }
+
+    .divider{
+      height:1px;
+      background:var(--border);
+      margin:0 24px;
+    }
+
+    /* CARDS */
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:2px;
+      background:var(--border);
+      margin-top:50px;
+    }
+
+    .card{
+      background:var(--card);
+      padding:38px;
+      transition:0.3s;
+    }
+
+    .card:hover{
+      background:var(--card2);
+      transform:translateY(-3px);
+    }
+
+    /* WHY */
+
+    .why-list{
+      list-style:none;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:18px;
+      margin-top:45px;
+    }
+
+    .why-list li{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-left:3px solid var(--green);
+      padding:22px;
+      color:#a8beb2;
+      transition:0.3s;
+    }
+
+    .why-list li:hover{
+      transform:translateX(4px);
+      border-left-color:#fff;
+    }
+
+    /* LEAGUES */
+
+    .league-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:22px;
+      margin-top:45px;
+    }
+
+    .league-card{
+      background:var(--card);
+      border:1px solid var(--border);
+      padding:30px;
+      transition:0.3s;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .league-card::before{
+      content:'';
+      position:absolute;
+      left:0;
+      top:0;
+      width:3px;
+      height:100%;
+      background:var(--green);
+      transform:scaleY(0);
+      transform-origin:top;
+      transition:0.3s;
+    }
+
+    .league-card:hover::before{
+      transform:scaleY(1);
+    }
+
+    .league-card:hover{
+      transform:translateY(-5px);
+      border-color:rgba(0,230,118,0.4);
+    }
+
+    .emoji{
+      font-size:34px;
+      margin-bottom:12px;
+      display:block;
+    }
+
+    /* TABLE */
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:45px;
+    }
+
+    td{
+      padding:18px 25px;
+      border:1px solid var(--border);
+    }
+
+    tr:nth-child(odd){
+      background:var(--card);
+    }
+
+    tr:nth-child(even){
+      background:var(--card2);
+    }
+
+    td:first-child{
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:2px;
+      font-size:13px;
+    }
+
+    td:last-child{
+      color:var(--green);
+      font-weight:700;
+    }
+
+    /* CHANNELS */
+
+    .pill-wrap{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      margin-top:40px;
+    }
+
+    .pill{
+      padding:11px 22px;
+      background:var(--card);
+      border:1px solid var(--border);
+      color:#dff5e4;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      font-size:14px;
+      transition:0.3s;
+    }
+
+    .pill:hover{
+      background:var(--green);
+      color:#000;
+    }
+
+    /* FEATURES */
+
+    .features{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+      gap:2px;
+      background:var(--border);
+      margin-top:50px;
+    }
+
+    .feature{
+      background:var(--card);
+      padding:38px;
+      transition:0.3s;
+    }
+
+    .feature:hover{
+      background:var(--card2);
+    }
+
+    .feature-icon{
+      font-size:36px;
+      margin-bottom:18px;
+      display:block;
+    }
+
+    /* PROS CONS */
+
+    .proscons{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:24px;
+      margin-top:45px;
+    }
+
+    .box{
+      border:1px solid var(--border);
+      overflow:hidden;
+    }
+
+    .box-head{
+      padding:18px 28px;
+      font-family:'Barlow Condensed',sans-serif;
+      text-transform:uppercase;
+      letter-spacing:3px;
+      font-weight:700;
+    }
+
+    .pros .box-head{
+      background:rgba(0,230,118,0.12);
+      color:var(--green);
+    }
+
+    .cons .box-head{
+      background:rgba(255,61,87,0.1);
+      color:var(--red);
+    }
+
+    .box ul{
+      list-style:none;
+      padding:20px 28px;
+    }
+
+    .box li{
+      padding:11px 0;
+      border-bottom:1px solid var(--border);
+      color:#9eb6aa;
+    }
+
+    .box li:last-child{
+      border-bottom:none;
+    }
+
+    /* STEPS */
+
+    .steps{
+      list-style:none;
+      counter-reset:step;
+      margin-top:45px;
+    }
+
+    .steps li{
+      counter-increment:step;
+      display:flex;
+      gap:24px;
+      padding:28px 0;
+      border-bottom:1px solid var(--border);
+    }
+
+    .steps li::before{
+      content:counter(step, decimal-leading-zero);
+      font-family:'Bebas Neue',sans-serif;
+      font-size:42px;
+      color:var(--green);
+      line-height:1;
+    }
+
+    /* FAQ */
+
+    .faq{
+      margin-top:45px;
+    }
+
+    .faq-item{
+      border:1px solid var(--border);
+      margin-bottom:12px;
+      overflow:hidden;
+    }
+
+    .faq-q{
+      background:var(--card);
+      padding:22px 26px;
+      cursor:pointer;
+      font-weight:600;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .faq-a{
+      background:var(--card2);
+      padding:0 26px;
+      max-height:0;
+      overflow:hidden;
+      transition:0.4s;
+    }
+
+    .faq-item.active .faq-a{
+      padding:22px 26px;
+      max-height:200px;
+    }
+
+    /* CONCLUSION */
+
+    .conclusion{
+      background:linear-gradient(135deg, rgba(0,230,118,0.06), rgba(0,230,118,0.02));
+      border:1px solid var(--border);
+      padding:55px;
+      text-align:center;
+      margin-top:50px;
+    }
+
+    .conclusion p{
+      max-width:700px;
+      margin:auto;
+    }
+
+    footer{
+      text-align:center;
+      padding:40px 20px;
+      color:var(--muted);
+      border-top:1px solid var(--border);
+      margin-top:80px;
+      position:relative;
+      z-index:1;
+    }
+
+    /* REVEAL */
+
+    .reveal{
+      opacity:0;
+      transform:translateY(30px);
+      transition:1s;
+    }
+
+    .reveal.active{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    @keyframes fadeUp{
+      from{
+        opacity:0;
+        transform:translateY(20px);
+      }
+
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    @media(max-width:768px){
+
+      .hero h1{
+        font-size:95px;
+      }
+
+      .hero-sub{
+        font-size:16px;
+        letter-spacing:4px;
+      }
+
+      .hero-desc{
+        font-size:15px;
+      }
+
+      section{
+        padding:70px 20px;
+      }
+
+      .conclusion{
+        padding:35px 22px;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- PARTICLES -->
+  <div class="particles" id="particles"></div>
+
+  <!-- HERO -->
+  <div class="hero">
+
+    <div class="hero-ring"></div>
+
+    <div class="live-badge">
+      <span class="live-dot"></span>
+      LIVE SPORTS STREAMING
+    </div>
+
+    <h1>SPORTZFY</h1>
+
+    <p class="hero-sub">
+      FREE · HD · FAST · ALL SPORTS
+    </p>
+
+    <p class="hero-desc">
+      Watch live cricket, football, basketball, wrestling, and more in HD quality without subscriptions. Enjoy smooth streaming with a premium experience.
+    </p>
+
+    <a href="#download" class="btn-download">
+      ⬇ DOWNLOAD NOW
+    </a>
+
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+
+    <div class="stat">
+      <span class="stat-num">14MB</span>
+      <span class="stat-label">APP SIZE</span>
+    </div>
+
+    <div class="stat">
+      <span class="stat-num">HD</span>
+      <span class="stat-label">QUALITY</span>
+    </div>
+
+    <div class="stat">
+      <span class="stat-num">FREE</span>
+      <span class="stat-label">NO SUBSCRIPTION</span>
+    </div>
+
+    <div class="stat">
+      <span class="stat-num">V15</span>
+      <span class="stat-label">LATEST VERSION</span>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- OVERVIEW -->
+  <section class="reveal">
+
+    <div class="section-tag">Overview</div>
+
+    <h2>What is Sportzfy App?</h2>
+
+    <p>
+      Sportzfy is a popular application that is created for sports streaming. Are you tired of watching matches on television and want something easy for this purpose? You want to stream the PSL final but every single app or website demands either your credit card or may show ads.
+    </p>
+
+    <p>
+      No need to worry because you can watch live sports channels and match highlights on this platform. All the content present in it can be streamed in HD quality.
+    </p>
+
+    <div class="grid-2">
+
+      <div class="card">
+        <h3>Free Streaming</h3>
+        <p>
+          This application provides the best solution for users and offers free streaming with no hidden charges for cricket, football, or other sports.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Multi Device Support</h3>
+        <p>
+          The app is compatible with Android, PC, Smart TVs, and iOS devices with multilingual commentary support.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>HD Quality</h3>
+        <p>
+          Stream live matches, highlights, interviews, and tournaments in HD quality with smooth playback.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Popular Channels</h3>
+        <p>
+          Sports channels such as Star Sports, PTV Sports, Fox Cricket, Willow TV, and Sony Sports are available.
+        </p>
+      </div>
+
+    </div>
+
+  </section>    transition: 0.3s;
 }
 
 .box:hover {
