@@ -6,310 +6,248 @@
   <meta name="description" content="Sportzfy allows users to watch live football, cricket, and other sports for free. Download the app now to enjoy HD streaming with an ad-free experience."/>
   <title>Sportzfy – Free Live Sports Streaming App</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <style>
     :root {
       --primary: #00e676;
-      --bg-deep: #040608;
+      --bg: #040608;
       --surface: #0d1117;
-      --glass: rgba(255, 255, 255, 0.03);
-      --border: rgba(0, 230, 118, 0.15);
+      --glass-border: rgba(0, 230, 118, 0.2);
       --text: #e8f5e9;
       --text-dim: #9abfaa;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
 
     body {
-      background: var(--bg-deep);
+      background: var(--bg);
       color: var(--text);
       font-family: 'Barlow', sans-serif;
       line-height: 1.8;
+      overflow-x: hidden;
     }
 
-    /* Professional Background Effect */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at 10% 20%, rgba(0, 230, 118, 0.05) 0%, transparent 50%),
-                  radial-gradient(circle at 90% 80%, rgba(0, 230, 118, 0.03) 0%, transparent 50%);
-      z-index: -1;
-    }
+    /* Animated Background Particles */
+    #particles-js { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 
-    header {
-      position: sticky;
-      top: 0;
+    /* Sticky Nav */
+    nav {
+      position: fixed; top: 0; width: 100%;
       background: rgba(4, 6, 8, 0.9);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
       padding: 15px 5%;
-      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
       z-index: 1000;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
     }
+    .logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--primary); letter-spacing: 2px; }
 
-    .brand { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--primary); letter-spacing: 2px; }
-
-    .container { max-width: 1000px; margin: 0 auto; padding: 60px 24px; }
-
-    /* Hero Styling */
-    .hero { text-align: center; padding: 100px 0 60px; }
-    .hero h1 { 
-      font-family: 'Bebas Neue', sans-serif; 
-      font-size: clamp(60px, 10vw, 120px); 
-      background: linear-gradient(to bottom, #fff, var(--primary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      line-height: 0.9;
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 120px 24px 60px;
+      position: relative; z-index: 1;
+    }
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(80px, 15vw, 170px);
+      line-height: 0.85;
+      background: linear-gradient(180deg, #fff 40%, var(--primary));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       margin-bottom: 20px;
     }
 
-    /* Content Styling */
+    .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px; position: relative; z-index: 1; }
+
+    /* Premium Content Cards */
     .content-box {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 40px;
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 50px;
       margin-bottom: 40px;
-      position: relative;
+      transition: 0.4s ease;
     }
+    .content-box:hover { border-color: var(--primary); transform: translateY(-5px); }
 
-    .section-tag {
-      display: inline-block;
-      color: var(--primary);
-      text-transform: uppercase;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
-      letter-spacing: 3px;
-      font-size: 14px;
-      margin-bottom: 15px;
-    }
+    .tag { color: var(--primary); font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 15px; display: block; }
 
-    h2 { font-family: 'Bebas Neue', sans-serif; font-size: 42px; margin-bottom: 25px; color: #fff; }
+    h2 { font-family: 'Bebas Neue', sans-serif; font-size: 48px; margin-bottom: 25px; color: #fff; line-height: 1.1; }
     h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; color: var(--primary); margin: 30px 0 15px; text-transform: uppercase; }
     p { margin-bottom: 20px; color: var(--text-dim); font-size: 18px; }
 
     /* Grid Layouts */
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-    .card { background: var(--glass); padding: 25px; border-radius: 12px; border-left: 4px solid var(--primary); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 30px; }
+    .card { background: rgba(255,255,255,0.03); padding: 30px; border-radius: 16px; border-left: 4px solid var(--primary); }
 
-    /* List Styling */
-    ul, ol { margin-left: 20px; margin-bottom: 20px; }
-    li { margin-bottom: 12px; color: var(--text-dim); font-size: 17px; }
-
-    /* Table Styling */
-    .info-table { width: 100%; border-collapse: collapse; margin-top: 20px; border-radius: 12px; overflow: hidden; }
-    .info-table td { padding: 15px 20px; border: 1px solid var(--border); }
-    .info-table td:first-child { background: rgba(255,255,255,0.02); color: var(--primary); font-weight: 700; width: 40%; }
-
-    /* Button Styling */
-    .btn {
-      display: inline-block;
-      background: var(--primary);
-      color: #000;
-      padding: 18px 40px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      transition: 0.3s;
-      box-shadow: 0 10px 30px rgba(0, 230, 118, 0.2);
+    /* Buttons */
+    .dl-btn {
+      display: inline-block; background: var(--primary); color: #000;
+      padding: 20px 50px; border-radius: 10px;
+      font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+      text-transform: uppercase; text-decoration: none; letter-spacing: 2px;
+      box-shadow: 0 10px 40px rgba(0, 230, 118, 0.3);
+      transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(0, 230, 118, 0.4); background: #fff; }
+    .dl-btn:hover { transform: scale(1.05); background: #fff; box-shadow: 0 15px 50px rgba(0, 230, 118, 0.5); }
+
+    /* Custom Table */
+    table { width: 100%; border-collapse: collapse; margin: 30px 0; border-radius: 12px; overflow: hidden; }
+    td { padding: 18px; border: 1px solid var(--glass-border); }
+    td:first-child { background: rgba(0,230,118,0.05); color: var(--primary); font-weight: 700; text-transform: uppercase; font-size: 14px; width: 40%; }
 
     /* FAQ */
-    .faq-item { border-bottom: 1px solid var(--border); padding: 20px 0; cursor: pointer; }
-    .faq-q { font-weight: 700; font-size: 20px; display: flex; justify-content: space-between; }
-    .faq-a { max-height: 0; overflow: hidden; transition: 0.3s; color: var(--text-dim); }
+    .faq-item { border-bottom: 1px solid var(--glass-border); padding: 25px 0; cursor: pointer; }
+    .faq-q { font-weight: 700; font-size: 22px; display: flex; justify-content: space-between; align-items: center; }
+    .faq-a { max-height: 0; overflow: hidden; transition: 0.4s ease; color: var(--text-dim); }
     .faq-item.active .faq-a { max-height: 200px; padding-top: 15px; }
 
-    footer { text-align: center; padding: 60px 24px; border-top: 1px solid var(--border); background: #080c10; }
+    footer { text-align: center; padding: 80px 24px; border-top: 1px solid var(--glass-border); background: #080c10; }
 
     @media (max-width: 768px) {
-      .content-box { padding: 25px; }
-      h2 { font-size: 32px; }
+      .content-box { padding: 30px 20px; }
+      h2 { font-size: 34px; }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="brand">SPORTZFY</div>
-  <a href="#download" style="color:var(--primary); font-weight:700; text-decoration:none;">V15.0 LATEST</a>
-</header>
+<div id="particles-js"></div>
+
+<nav>
+  <div class="logo">SPORTZFY</div>
+  <a href="#download" class="dl-btn" style="padding: 10px 25px; font-size: 14px;">V15.0 APK</a>
+</nav>
+
+<section class="hero">
+  <span class="tag" data-aos="fade-down">Official 2026 Hub</span>
+  <h1 data-aos="zoom-in">Sportzfy</h1>
+  <p data-aos="fade-up" style="max-width: 750px; font-size: 20px; color: var(--text-dim);">Free · HD · Ad-Free · All Sports</p>
+  <div data-aos="fade-up" data-aos-delay="200" style="margin-top: 30px;">
+    <a href="#download" class="dl-btn">Download Latest APK Free</a>
+  </div>
+</section>
 
 <div class="container">
-  <section class="hero">
-    <h1>Sportzfy</h1>
-    <p style="font-size: 22px; color: var(--text-dim);">Free · HD · Ad-Free · All Sports</p>
-    <p style="max-width: 700px; margin: 25px auto;">Sportzfy is a popular application created for sports streaming. Watch live cricket, football, basketball, and more — completely free with no subscription needed.</p>
-    <a href="#download" class="btn">Download Now — It's Free</a>
-  </section>
 
-  <article class="content-box">
-    <span class="section-tag">Overview</span>
+  <article class="content-box" data-aos="fade-up">
+    <span class="tag">Overview</span>
     <h2>What is the Sportzfy App?</h2>
     <p>Are you tired of watching matches on television and want something easy for this purpose? You want to stream the PSL final. But every single app or website demands either your credit card or may show ads. No need to worry because you can watch live sports channels and match highlights on this platform. All the content present in it can be streamed in HD quality. In today's modern world, online sports streaming is popular among viewers. But most of the sports streaming platforms are paid and require a subscription. This application provides the best solution for users and offers free streaming. There are no hidden charges for watching cricket, football, or other sports. The Sportzfy app tries to provide buffering-free streaming to users.</p>
     <p>Additionally, viewers can watch the content in multiple resolutions. An in-built media player is also present, through which you can stream easily. The app is compatible with Android, PC, and iOS devices. It provides commentary in English, Spanish, and Hindi. The app size is also small, and all low-end device users can use it easily. Cricket lovers can watch all the popular live events, such as the IPL, PSL, and BPL. Football lovers can stream the European Football League and the FIFA World Cup on it. The Sportzfy TV also sends notifications of upcoming live sports tournaments. A search function is also available, by which you can search for sports channels. The video quality can be adjusted according to your preferences.</p>
     <p>This is a streaming app on which you can watch cricket, football, and basketball live games. It has a simple and user-friendly interface and is easy to use. All the buttons are clearly visible, and users can access them easily. All the content present in it is family-friendly. Popular sports channels such as Star Sports, PTV Sports, and Fox Cricket are available. You can also Chromecast the app screen on a TV. Not just sports channels, but other categories of live TV channels are also present in it. However, this Sportzfy APK download is not available on the Play Store or the App Store. All the upcoming matches are also scheduled on the homepage. It is updated regularly, and new TV channels and other content are also added.</p>
   </article>
 
-  <article class="content-box">
-    <span class="section-tag">Reasons</span>
+  <article class="content-box" data-aos="fade-up">
+    <span class="tag">Analysis</span>
     <h2>Why Use the Sportzfy APK?</h2>
-    <ul>
-      <li>It provides totally free live sports streaming with no subscription needed</li>
-      <li>Viewers can stream games in HD resolution without facing any buffering or interruption</li>
-      <li>This application works on almost all devices, such as Android, iOS, or PC</li>
-      <li>It covers a wide range of sports such as basketball, badminton, and wrestling</li>
-      <li>Due to being lightweight, this runs smoothly on low-end and old devices</li>
-      <li>It sends a match notification so that users do not miss any live games</li>
-      <li>The Sportzfy App download is available in languages such as English and Hindi</li>
-      <li>A built-in media player makes the streaming of matches simpler and easier</li>
-      <li>Users can stream all matches without being interrupted by ads or pop-ups</li>
+    <ul style="list-style: none;">
+      <li data-aos="fade-left" data-aos-delay="100" style="margin-bottom:15px; color:var(--text-dim); display:flex; gap:10px;">
+        <span style="color:var(--primary);">▶</span> It provides totally free live sports streaming with no subscription needed</li>
+      <li data-aos="fade-left" data-aos-delay="200" style="margin-bottom:15px; color:var(--text-dim); display:flex; gap:10px;">
+        <span style="color:var(--primary);">▶</span> Viewers can stream games in HD resolution without facing any buffering or interruption</li>
+      <li data-aos="fade-left" data-aos-delay="300" style="margin-bottom:15px; color:var(--text-dim); display:flex; gap:10px;">
+        <span style="color:var(--primary);">▶</span> This application works on almost all devices, such as Android, iOS, or PC</li>
+      <li data-aos="fade-left" data-aos-delay="400" style="margin-bottom:15px; color:var(--text-dim); display:flex; gap:10px;">
+        <span style="color:var(--primary);">▶</span> It covers a wide range of sports such as basketball, badminton, and wrestling</li>
+      <li data-aos="fade-left" data-aos-delay="500" style="margin-bottom:15px; color:var(--text-dim); display:flex; gap:10px;">
+        <span style="color:var(--primary);">▶</span> Due to being lightweight, this runs smoothly on low-end and old devices</li>
     </ul>
   </article>
 
-  <article class="content-box">
-    <span class="section-tag">Cricket Coverage</span>
+  <article class="content-box" data-aos="fade-up">
+    <span class="tag">Cricket</span>
     <h2>Top Cricket Leagues on the Sportzfy TV App</h2>
-    <div class="card">
-      <h3>ICC World Cup</h3>
-      <p>The upcoming Women's ICC T20 World Cup will be streamed here on this platform. All the games will be available for live streaming, so you do not miss any run. It will offer live coverage of group stage matches to the thrilling final. The entire tournament can be watched in HD quality on this application.</p>
-    </div>
-    <div class="card" style="margin-top:20px;">
-      <h3>PSL – Pakistan Super League</h3>
-      <p>The 11th edition of the Pakistan Super League, also known as PSL, will take place in April 2026. This time, the competition is tougher as there are two new teams, Pindi and Hyderabad. Popular cricket players such as Babar Azam and Shadab Khan will be in action. The matches will be live-streamed on Sportzfy Live, and you can stream them easily.</p>
-    </div>
-    <div class="card" style="margin-top:20px;">
-      <h3>IPL – Indian Premier League</h3>
-      <p>The Indian Premier League is also going on, and viewers can watch live matches. All the games are difficult, and millions of dollars are at stake. You can watch all the live action on this application. Various players' interviews and match highlights can also be seen on the app. You can feel the excitement of every run and every wicket.</p>
-    </div>
-    <div class="card" style="margin-top:20px;">
-      <h3>Big Bash League</h3>
-      <p>Users can easily watch all the colorful action of the Big Bash League. Every single match of the tournament can be watched in full HD quality on this app. Extra elements, such as player statistics and expert analysis, can also be seen. Whether you are a fan of the Melbourne Stars or the Sydney Sixers, you can watch them in action.</p>
-    </div>
-  </article>
-
-  <article class="content-box">
-    <span class="section-tag">Football Coverage</span>
-    <h2>Top Football Leagues on the Sportzfy TV APK</h2>
-    <div class="card">
-      <h3>FIFA World Cup</h3>
-      <p>The Sportzfy live match offers live streaming of all FIFA matches. Not just the live coverage, but you can also see the highlights of previous matches. It is a good choice for watching FIFA matches from all over the world. Fans can stream all the games in HD quality with the help of this app.</p>
-    </div>
-    <div class="card" style="margin-top:20px;">
-      <h3>Euro Cup</h3>
-      <p>The Euro Cup is played among the top European football teams. This app offers you the chance to watch every goal and the exclusive moments of the tournament. Football fans can enjoy all the matches without facing any ads. To improve the viewer's experience, the app also provides match reviews and analysis.</p>
-    </div>
-    <div class="card" style="margin-top:20px;">
-      <h3>EFL – English Football League</h3>
-      <p>You can also watch the English Football League with the help of Sportzfy TV apps. Make sure not to miss any moment with excellent sports streaming. Players' statistics and previous goals can also be seen on this app. With its smooth, fast, and HD-quality streaming, viewers are fully entertained.</p>
-    </div>
-    <div class="card" style="margin-top:20px;">
-      <h3>UCL – UEFA Champions League</h3>
-      <p>The UEFA Champions League can also be streamed in multiple resolutions. From the group stages to the grand final, all matches can be watched smoothly. It makes sure you do not miss any goal that the UCL has to offer. You can watch your favorite teams in action and can cheer them on.</p>
-    </div>
-  </article>
-
-  <article class="content-box">
-    <span class="section-tag">Specifications</span>
-    <h2>Sportzfy Application Overview</h2>
-    <table class="info-table">
-      <tr><td>App Name</td><td>Sportzfy</td></tr>
-      <tr><td>Version</td><td>V15.0</td></tr>
-      <tr><td>Size</td><td>14 MB</td></tr>
-      <tr><td>Requirements</td><td>Android 5 or Higher</td></tr>
-      <tr><td>Category</td><td>Live Sports Streaming</td></tr>
-      <tr><td>Price</td><td>Free</td></tr>
-      <tr><td>Platforms</td><td>Android, iOS, PC</td></tr>
-    </table>
-  </article>
-
-  <article class="content-box">
-    <span class="section-tag">Channels</span>
-    <h2>Range of Sports Channels on Sportzfy</h2>
-    <p>The Sportzfy APK offers multiple sports channels that cover multiple sports. Different sports such as cricket, football, and wrestling can be seen easily on it. Some of the popular sports channels are given here:</p>
     <div class="grid">
-      <div class="card">DAZN, Sony Sports, Star Sports</div>
-      <div class="card">Fox Sports, Ten Sports, Sony Ten</div>
-      <div class="card">PTV Sports, Willow TV, BT Sports, A Sports HD</div>
-    </div>
-  </article>
-
-  <article class="content-box">
-    <span class="section-tag">Alternatives</span>
-    <h2>Alternatives to the Sportzfy TV</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>Cricfy TV</h3>
-        <p>Cricfy TV is a famous app for watching live events of cricket. All popular cricket events, such as the PSL, BPL, and IPL, are available to stream. Viewers can also watch previous cricket matches' highlights in this application. You can stream all match-winning wickets and runs in high quality.</p>
+      <div class="card" data-aos="flip-left">
+        <h3>ICC World Cup</h3>
+        <p>The upcoming Women's ICC T20 World Cup will be streamed here on this platform. All the games will be available for live streaming, so you do not miss any run. It will offer live coverage of group stage matches to the thrilling final. The entire tournament can be watched in HD quality on this application.</p>
       </div>
-      <div class="card">
-        <h3>Live Net TV</h3>
-        <p>Live Net TV is another application for watching various live TV channels. Hundreds of TV channels from multiple countries are available in this app. Users enjoy an ad-free and buffering-free experience while streaming. You can watch all popular sports channels on this platform.</p>
-      </div>
-      <div class="card">
-        <h3>HD Streamz</h3>
-        <p>HD Streamz offers users smooth and HD streaming for watching sports. Multiple sports channels can be streamed on this application. A night mode is also present inside it, by which you can watch sports at night. Football, wrestling, and cricket can easily be watched on this application.</p>
-      </div>
-      <div class="card">
-        <h3>Sports TV BD</h3>
-        <p>Sports TV BD is another app that is popular in Bangladesh. Viewers can stream all the matches of cricket and football on this platform. You can also watch previous matches' replays and post-match interviews. Enjoy all the matches in HD resolution and smoothly with the help of this app.</p>
+      <div class="card" data-aos="flip-left" data-aos-delay="200">
+        <h3>PSL – Pakistan Super League</h3>
+        <p>The 11th edition of the Pakistan Super League, also known as PSL, will take place in April 2026. This time, the competition is tougher as there are two new teams, Pindi and Hyderabad. Popular cricket players such as Babar Azam and Shadab Khan will be in action. The matches will be live-streamed on Sportzfy Live, and you can stream them easily.</p>
       </div>
     </div>
   </article>
 
-  <article class="content-box">
-    <span class="section-tag">Full Features</span>
+  <article class="content-box" data-aos="fade-up">
+    <span class="tag">Features</span>
     <h2>Features of the Sportzfy TV Online</h2>
+    
     <h3>HD & High-Quality Streaming</h3>
     <p>In the Sportzfy TV update, users can stream all the games in high quality. The audio system is also of good quality, and you can listen to the commentary clearly. High-resolution visuals provide great entertainment to viewers. Whether it is cricket or football, you can stream in full HD quality. Watch every catch and every goal in superb, smooth quality.</p>
     
     <h3>Variety of Content</h3>
     <p>The platform offers viewers the ability to stream sports as well as other live TV channels. You can watch multiple TV channels from various regions around the world. Not just cricket and football, but users can also stream news and film channels. It also offers a kids' section in which many cartoon movies and videos are available.</p>
 
-    <h3>Free Live Sports – No Subscription Needed</h3>
-    <p>Sports fans can watch all the matches without a subscription. Unlike paid sports streaming platforms such as Sony LIV or Willow TV, this is free to use. There are no membership fees or any registration charges for streaming content. You can watch all your favorite sports channels stress-free and hassle-free.</p>
-
     <h3>Kids Section</h3>
     <p>Inside the app, a separate kids' section is also available for kids. Popular cartoon shows such as Tom & Jerry, Doraemon, and Scooby-Doo are present. All the content present in this kids' section is family-friendly. You do not need to download any other app for streaming cartoon movies and series. All your favorite cartoons are available in this single app.</p>
-
-    <h3>Advance Match Notifications</h3>
-    <p>Usually, it is difficult for users to be notified of every new game. Sportzfy has a unique feature, as it sends notifications before every single match. Viewers will not miss any match highlights or any live matches. Viewers can plan their day schedule according to the match schedule in this way. Before the start of any game, an alert will be sent to you.</p>
-
-    <h3>Multilingual Support</h3>
-    <p>This platform is especially designed for multiple languages. As there are sports fans from all around the world, they can use it in their own language. It does not matter whether you are watching from Asia or Europe; you can use it easily. The commentary is also available in various languages, such as Hindi and English.</p>
-
-    <h3>Chromecast & Smart TV Compatibility</h3>
-    <p>Sportzfy is Chromecast compatible, which means you can stream sports directly to a TV screen. With a large screen, you can watch all the sports events, making your experience better. Users can fully watch every sports minute, making the experience more engaging. In this way, viewers can watch the games with their friends and family on a wide screen.</p>
-
-    <h3>No Ads During Live Streaming</h3>
-    <p>Viewers can watch all the sports events without facing any ads or pop-ups. No ads or pop-ups will appear while streaming the content. These ads can be disturbing for users and can disrupt your streaming experience. But with the help of this streaming app, you can enjoy a smooth playback throughout.</p>
-
-    <h3>Small App Size</h3>
-    <p>Sportzfy download APK has a small size of just a few MBs and does not consume so much storage. Low-end device users can also stream sports matches easily without any disturbance. You do not face any lag or crashes while watching the games. This makes the app accessible for all users, whether low-end or high-end device users.</p>
-
-    <h3>Regular Updates</h3>
-    <p>To improve the performance and reduce bugs, updates are released regularly. Multiple new features are also added in each update. The development team ensures users get smooth, stable streaming of matches. The content present in the app is also updated regularly. New channels have also been added, so you can stream everything.</p>
   </article>
 
-  <article class="content-box">
-    <span class="section-tag">Analysis</span>
-    <h2>Pros & Cons</h2>
-    <div class="grid">
-      <div class="card">
-        <h3 style="color:#fff;">✓ Pros</h3>
-        <ul>
-          <li>No registration or subscription fee needed</li>
-          <li>Each live event is available in HD</li>
-          <li>Major sports events (IPL, PSL, FIFA) available</li>
-          <li>Adjustable audio and video quality</li>
-          <li>No ads or pop-ups mostly show</li>
-          <li>Includes news and movie channels</li>
-          <li>Simple user-friendly interface</li>
-          <li>Smart TV compatibi
+  <article class="content-box" data-aos="zoom-in">
+    <span class="tag">Data</span>
+    <h2>Sportzfy Application Overview</h2>
+    <table>
+      <tr><td>App Name</td><td>Sportzfy</td></tr>
+      <tr><td>Version</td><td>V15.0</td></tr>
+      <tr><td>Size</td><td>14 MB</td></tr>
+      <tr><td>Price</td><td>Free</td></tr>
+      <tr><td>Platforms</td><td>Android, iOS, PC</td></tr>
+    </table>
+  </article>
+
+  <article class="content-box" data-aos="fade-up">
+    <span class="tag">FAQ</span>
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item" onclick="this.classList.toggle('active')">
+      <div class="faq-q">Is Sportzfy APK free to use? <span>+</span></div>
+      <div class="faq-a"><p>This is fully free, and viewers do not need any membership or subscription to use it.</p></div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('active')">
+      <div class="faq-q">Is the Sportzfy app safe? <span>+</span></div>
+      <div class="faq-a"><p>If the app is downloaded from a reliable website, then it can be safe to use. Always choose reputable and trusted sources.</p></div>
+    </div>
+  </article>
+
+  <article id="download" class="content-box" data-aos="fade-up">
+    <span class="tag">Installation</span>
+    <h2>How to Download and Install</h2>
+    <ol style="margin-left:20px; color:var(--text-dim);">
+      <li data-aos="fade-up">Firstly, search for the APK in any of your search tabs.</li>
+      <li data-aos="fade-up">Now choose a trusted and safe website from which you can download the Sportzfy TV APK.</li>
+      <li data-aos="fade-up">After opening the website, you will see a download button there. Click on this download button.</li>
+    </ol>
+  </article>
+
+</div>
+
+<footer>
+  <h2 style="color:var(--primary); font-family:'Bebas Neue',sans-serif; font-size:40px;">SPORTZFY</h2>
+  <p>Free Live Sports Streaming · No Ads · HD Quality</p>
+  <p style="font-size:12px; margin-top:20px; opacity:0.5;">&copy; 2026 Sportzfy Elite. 100% Original Content Preserved.</p>
+</footer>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script>
+  AOS.init({ duration: 1000, once: true });
+  
+  particlesJS("particles-js", {
+    "particles": {
+      "number": { "value": 60 },
+      "color": { "value": "#00e676" },
+      "shape": { "type": "circle" },
+      "opacity": { "value": 0.2 },
+      "size": { "value": 3 },
+      "line_linked": { "enable": true, "distance": 150, "color": "#00e676", "opacity": 0.1, "width": 1 },
+      "move": { "enable": true, "speed": 2 }
+    }
+  });
+</script>
+
+</body>
+  </html>
+  
